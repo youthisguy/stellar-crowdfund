@@ -7,11 +7,8 @@ import { MdLogout } from "react-icons/md";
 import { useWallet } from "../contexts/WalletContext";
 
 export default function WalletConnection() {
-  // 1. Destructure walletsKit and setAddress from the context
   const { address, setAddress, walletsKit } = useWallet();
-  const [usdcBalance, setUsdcBalance] = useState("0");
   const [loading, setLoading] = useState(false);
-  const [faucetLoading, setFaucetLoading] = useState(false);
   const [toast, setToast] = useState<{
     message: string;
     type: "success" | "error";
@@ -20,20 +17,13 @@ export default function WalletConnection() {
   const handleConnect = async () => {
     try {
       setLoading(true);
-
       await walletsKit.openModal({
         onWalletSelected: async (option) => {
           walletsKit.setWallet(option.id);
-
           const { address } = await walletsKit.getAddress();
-
           setAddress(address);
-          console.log("Connected successfully:", address);
         },
-        onClosed: (err) => {
-          console.log("Modal closed", err);
-          setLoading(false);
-        },
+        onClosed: () => setLoading(false),
       });
     } catch (error: any) {
       console.error("Connection error:", error);
@@ -43,36 +33,7 @@ export default function WalletConnection() {
 
   const handleDisconnect = () => {
     setAddress(null);
-
     if (stellar.disconnect) stellar.disconnect();
-  };
-
-  const handleRequestFaucet = async () => {
-    if (!address) return;
-    setFaucetLoading(true);
-
-    try {
-      const res = await fetch(
-        `https://friendbot.stellar.org?addr=${encodeURIComponent(address)}`
-      );
-      const data = await res.json();
-
-      if (res.ok && data.successful) {
-        setToast({
-          message: "Success! ~10,000 test XLM added",
-          type: "success",
-        });
-      } else {
-        setToast({
-          message: data.title || "Failed – rate limit",
-          type: "error",
-        });
-      }
-    } catch {
-      setToast({ message: "Network error", type: "error" });
-    } finally {
-      setFaucetLoading(false);
-    }
   };
 
   useEffect(() => {
@@ -82,12 +43,15 @@ export default function WalletConnection() {
     }
   }, [toast]);
 
+  // Shared button style to ensure identical padding and height
+  const buttonBaseClass = "flex-1 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 shadow-sm text-sm md:text-base";
+
   if (!address) {
     return (
       <button
         onClick={handleConnect}
         disabled={loading}
-        className="w-full bg-white hover:bg-blue-50 text-black font-medium py-3 px-4 rounded-lg transition disabled:opacity-60 flex items-center justify-center gap-2 shadow-sm"
+        className={`w-full bg-white hover:bg-zinc-100 text-black ${buttonBaseClass} disabled:opacity-60`}
       >
         {loading ? (
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-r-transparent" />
@@ -100,41 +64,33 @@ export default function WalletConnection() {
   }
 
   return (
-    <div className="rounded-xl relative">
+    <div className="w-full relative">
       {toast && (
-        <div
-          className={`absolute -bottom-14 left-1/2 -translate-x-1/2 px-5 py-3 rounded-lg shadow-xl text-sm font-medium z-50 whitespace-nowrap ${
-            toast.type === "success"
-              ? "bg-green-800/90 text-green-100 border border-green-600"
-              : "bg-red-800/90 text-red-100 border border-red-600"
-          }`}
-        >
+        <div className="absolute -top-14 left-1/2 -translate-x-1/2 px-5 py-3 rounded-lg shadow-xl text-sm font-medium z-50 whitespace-nowrap bg-zinc-800 text-white border border-zinc-700">
           {toast.message}
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-3 mb-4">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleRequestFaucet}
-            disabled={faucetLoading}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-50"
-          >
-            {faucetLoading ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-r-transparent" />
-            ) : (
-              <FaFaucet />
-            )}
-            Faucet
-          </button>
+      <div className="flex flex-col sm:flex-row items-center gap-3">
+        {/* USDC FAUCET LINK - Styled exactly like the buttons */}
+        <a
+          href="https://faucet.circle.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${buttonBaseClass} bg-cyan-600 hover:bg-cyan-500 text-white w-full sm:w-auto`}
+        >
+          <FaFaucet />
+          <span>Get USDC</span>
+        </a>
 
-          <button
-            onClick={handleDisconnect}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1.5 transition-colors shadow-sm"
-          >
-            <MdLogout /> Disconnect
-          </button>
-        </div>
+        {/* DISCONNECT BUTTON */}
+        <button
+          onClick={handleDisconnect}
+          className={`${buttonBaseClass} bg-rose-600 hover:bg-rose-500 text-white w-full sm:w-auto`}
+        >
+          <MdLogout />
+          <span>Disconnect</span>
+        </button>
       </div>
     </div>
   );
