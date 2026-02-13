@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { stellar } from "../lib/stellar";
-import { FaWallet, FaFaucet } from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
 import { MdLogout } from "react-icons/md";
 import { useWallet } from "../contexts/WalletContext";
+import { BiCoinStack } from "react-icons/bi";
 
 export default function WalletConnection() {
   const { address, setAddress, walletsKit } = useWallet();
@@ -43,23 +44,26 @@ export default function WalletConnection() {
     }
   }, [toast]);
 
-  // Shared button style to ensure identical padding and height
-  const buttonBaseClass = "flex-1 font-medium py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 shadow-sm text-sm md:text-base";
+ 
+  const buttonBaseClass = "font-medium py-3 px-4 rounded-xl transition flex items-center justify-center gap-2 shadow-sm text-sm md:text-base w-fit md:w-auto";
 
   if (!address) {
     return (
-      <button
-        onClick={handleConnect}
-        disabled={loading}
-        className={`w-full bg-white hover:bg-zinc-100 text-black ${buttonBaseClass} disabled:opacity-60`}
-      >
-        {loading ? (
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-r-transparent" />
-        ) : (
-          <FaWallet className="text-black" />
-        )}
-        {loading ? "Connecting..." : "Connect Wallet"}
-      </button>
+      <div className="flex justify-end w-full">
+        <button
+          onClick={handleConnect}
+          disabled={loading}
+          className={`bg-white hover:bg-zinc-100 text-black ${buttonBaseClass} disabled:opacity-60`}
+        >
+          {loading ? (
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-r-transparent" />
+          ) : (
+            <FaWallet className="text-black" />
+          )}
+          {/* Hiding text on mobile for the connect button too */}
+          <span className="hidden md:inline">{loading ? "Connecting..." : "Connect Wallet"}</span>
+        </button>
+      </div>
     );
   }
 
@@ -71,25 +75,27 @@ export default function WalletConnection() {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row items-center gap-3">
-        {/* USDC FAUCET LINK - Styled exactly like the buttons */}
+      <div className="flex flex-row items-center justify-end gap-2">
+        {/* USDC FAUCET */}
         <a
           href="https://faucet.circle.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className={`${buttonBaseClass} bg-cyan-600 hover:bg-cyan-500 text-white w-full sm:w-auto`}
+          className={`${buttonBaseClass} bg-[#2775CA] hover:bg-[#1E5BA3] text-white`}
+          title="Get USDC"
         >
-          <FaFaucet />
-          <span>Get USDC</span>
+          <BiCoinStack size={20} />
+          {/* <span className="hidden md:inline">Get USDC</span> */}
         </a>
 
-        {/* DISCONNECT BUTTON */}
+        {/* DISCONNECT */}
         <button
           onClick={handleDisconnect}
-          className={`${buttonBaseClass} bg-rose-600 hover:bg-rose-500 text-white w-full sm:w-auto`}
+          className={`${buttonBaseClass} bg-rose-600 hover:bg-rose-500 text-white`}
+          title="Disconnect"
         >
-          <MdLogout />
-          <span>Disconnect</span>
+          <MdLogout size={20} />
+          <span className="hidden md:inline">Disconnect</span>
         </button>
       </div>
     </div>

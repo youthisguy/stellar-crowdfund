@@ -1,14 +1,14 @@
- # 🚀 Soroban Crowdfund Protocol
+ # 🚀 Crowdfund Protocol
 
 A decentralized, trustless crowdfunding platform built on the **Stellar Soroban** smart contract engine. This protocol allows creators to raise funds in **USDC** with a "Goal or Nothing" mechanism, ensuring that funds are only released if the campaign target is met, otherwise, they remain secure for contributor protection.
 
-**Level 2 – Blue Belt / Soroban Track Submission**
+**Level 2 – Blue Belt Submission**
 
 ---
 
 ## ✨ Features
 
-* **Smart Contract Governance**: Fully governed by a Soroban Rust contract (No centralized middleman).
+* **Smart Contract Governance**: Fully governed by a Soroban Rust contract.
 * **USDC Standard**: Utilizes the official Circle USDC on Stellar Testnet for stable, real-world value simulation.
 * **Trustless Contributions**: Contributions are locked in the contract until the deadline.
 * **Real-time Global State**: View campaign progress, total raised, and target status even without a wallet connected.
@@ -32,8 +32,8 @@ A decentralized, trustless crowdfunding platform built on the **Stellar Soroban*
 | --- | --- |
 | **Contract ID** | `CD2UNSAD6GI5FX7NWFO3IU72E7LNP7OQDGQ4G7VURXY7GFULNBNFLM5J` |
 | **Network** | Stellar Testnet |
-| **Token Asset** | USDC (`GBBD47IF...FLA5`) |
-| **Explorer Link** | [View on Stellar Expert](https://www.google.com/search?q=https://stellar.expert/explorer/testnet/contract/CD2UNSAD6GI5FX7NWFO3IU72E7LNP7OQDGQ4G7VURXY7GFULNBNFLM5J) |
+| **Token Asset** | USDC (`GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5`) |
+| **Explorer Link** | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CD2UNSAD6GI5FX7NWFO3IU72E7LNP7OQDGQ4G7VURXY7GFULNBNFLM5J) |
 
 ---
 
@@ -48,7 +48,7 @@ A decentralized, trustless crowdfunding platform built on the **Stellar Soroban*
 ### 2. Installation
 
 ```bash
-git clone https://github.com/yourusername/soroban-crowdfund.git
+git clone https://github.com/youthisguy/stellar-crowdfund
 cd soroban-crowdfund
 npm install
 
@@ -65,36 +65,49 @@ Navigate to `http://localhost:3000`.
 
 ---
 
-## ✅ Submission Requirements (Soroban Track)
+## ✅ Submission Requirements
 
 * [x] **Wallet Integration**: Connect/Disconnect via Freighter.
 * [x] **Contract Interaction**: Implements `deposit` and `get_contribution` contract calls.
 * [x] **Read-Only Simulation**: Fetches global campaign stats on page load without requiring a signature.
-* [x] **Transaction Feedback**: Real-time status updates and clickable Stellar Expert transaction hashes.
-* [x] **Verifiable On-Chain**: All logic is handled by the deployed `CONTRACT_ID` provided above.
+* [x] **Transaction Feedback**: Real-time status updates, transaction hashes and Error handling.
+* [x] **Verifiable Onchain**: All logic is handled by the deployed `CONTRACT_ID` provided above.
 
 ---
 
 ## 📸 Screenshots
 
 ### 1. Global Campaign Dashboard
+*Real-time progress tracking fetching contract data.*
 
-*Real-time progress tracking with automated data fetching on page load.*
+![Campaign Dashboard](app/screenshots/campaign-initial-load.png)
 
-### 2. Wallet & Personal Contribution
+### 2. Multi-Wallet Integration
+*Implementation of StellarWalletsKit showing multiple wallet options.*
 
-*User-specific data showing USDC balance and individual contribution amounts.*
+![Wallet Options](app/screenshots/wallet-selection-modal.png)
 
-### 3. Contract Interaction
+### 3. Wallet & Personal Contribution
+*User-specific data display, including USDC balance and individual pledge amounts synchronized with the contract.*
 
-*Successful deposit transaction confirmed via Soroban RPC.*
+![Personal Contribution](app/screenshots/personal-contribution.png)
 
----
+### 4. Transaction Lifecycle (Pending & Success)
+*Real-time status tracking showing the transition from a pending Soroban RPC call to a successful on-chain confirmation.*
+
+![Transaction Pending](app/screenshots/transaction-pending-state.png)
+![Transaction Success](app/screenshots/deposit-success-confirmation.png)
+
+### 5. Error Handling & Resilience
+*Error handling, UI feedback.*
+
+![Error: User Rejected](app/screenshots/error-user-rejected.png)
+![Error: Insufficient Funds](app/screenshots/error-handling-demo.png)
 
 ## 🔗 Verifiable Transaction
 
-**Successful Deposit Hash:** `[INSERT_YOUR_TX_HASH_HERE]`
-
-*(You can verify this on-chain to see the `deposit` function being invoked with USDC tokens.)*
+**Successful Deposit Hash:** [View on Stellar Explorer](https://stellar.expert/explorer/testnet/tx/eec9ed488181dd3b49f69ca6176ca65fa5a2ef694c0960734396edf95a5cc063)
 
 ---
+
+**🚀 Live Demo:** [https://stellar-crowdfund.vercel.app/](https://stellar-crowdfund.vercel.app/)

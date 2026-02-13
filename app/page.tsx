@@ -38,7 +38,7 @@ export default function Home() {
     state: 2,
     raised: "0",
     target: "10000000",
-    deadline: 0,
+    deadline: 17775664,
     recipient: "",
   });
   const [amount, setAmount] = useState("");
@@ -131,7 +131,7 @@ export default function Home() {
     try {
       const sourceAddr =
         connectedAddress ||
-        "GDHT6O7S3S667STN7I2GRSXI7YF4TQX5R62L7NID6X2T2AOC7S6S7S6S";
+        "GDXK7EYVBXTITLBW2ZCODJW3B7VTVCNNNWDDEHKJ7Y67TZVW5VKRRMU6";
 
       const fetchValue = async (
         method: string,
@@ -193,8 +193,7 @@ export default function Home() {
     try {
       const contract = new Contract(CONTRACT_ID);
       const sourceAddr =
-      connectedAddress ||
-      "GDHT6O7S3S667STN7I2GRSXI7YF4TQX5R62L7NID6X2T2AOC7S6S7S6S";
+      connectedAddress;
       const account = await server.getAccount(sourceAddr);
       
       const tx = new TransactionBuilder(account, { fee: "1000", networkPassphrase })
@@ -316,7 +315,7 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* LEFT SIDE: Content & Story */}
         <div className="lg:col-span-7 space-y-8">
-          <div className="relative aspect-video rounded-[3rem] overflow-hidden border border-zinc-800 shadow-2xl">
+          <div className="relative aspect-video rounded-4xl sm:rounded-[3rem] overflow-hidden border border-zinc-800 shadow-2xl">
             <img
               src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2832&auto=format&fit=crop"
               alt="Campaign Hero"
@@ -350,7 +349,7 @@ export default function Home() {
               <div className="flex items-center gap-2 text-zinc-300 bg-zinc-900/50 px-4 py-2 rounded-2xl border border-zinc-800">
                 <CheckCircle2 size={18} className="text-cyan-500" />
                 <span className="text-sm font-bold uppercase tracking-tight">
-                  Verified Contract
+                  Smart Milestone
                 </span>
               </div>
               <div className="flex items-center gap-2 text-zinc-300 bg-zinc-900/50 px-4 py-2 rounded-2xl border border-zinc-800">
@@ -496,7 +495,7 @@ export default function Home() {
                   {sending ? (
                     <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
-                    "Confirm Contribution"
+                    `${!isInsufficient ? "Confirm Contribution" : "Insufficient balance"}`
                   )}
                   {!sending && <ArrowUpRight size={22} />}
                 </button>

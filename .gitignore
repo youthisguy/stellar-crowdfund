@@ -21,12 +21,3 @@ Cargo.lock
 npm-debug.log*
 yarn-debug.log*
 EOF
-
-# 2. Remove everything from staging (the 10k files)
-
-
-# 3. Now add only what you want
-git add .
-
-# 4. Commit
-git commit -m "Initial commit: Stellar crowdfunding dApp (Next.js + Soroban contract)"
